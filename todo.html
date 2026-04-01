@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: ltr;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        input[type="text"] {
+            width: calc(100% - 50px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            background: #5cb85c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #e9e9e9;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+        .completed {
+            text-decoration: line-through;
+        }
+        .btn-delete {
+            background: red;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>To-Do List Application</h1>
+        <input type="text" id="taskInput" placeholder="Add a new task...">
+        <button id="addTaskBtn">Add Task</button>
+        <ul id="taskList"></ul>
+    </div>
+
+    <script>
+        const taskInput = document.getElementById('taskInput');
+        const addTaskBtn = document.getElementById('addTaskBtn');
+        const taskList = document.getElementById('taskList');
+
+        // Load tasks from localStorage
+        const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+        function renderTasks() {
+            taskList.innerHTML = '';
+            tasks.forEach((task, index) => {
+                const li = document.createElement('li');
+                li.className = task.completed ? 'completed' : '';
+                li.innerHTML = `\n                    <span>${task.text}</span>\n                    <div>\n                        <button class='btn-delete' onclick='deleteTask(${index})'>Delete</button>\n                        <button onclick='toggleComplete(${index})'>${task.completed ? 'Undo' : 'Complete'}</button>\n                    </div>\n                `;
+                taskList.appendChild(li);
+            });
+        }
+
+        function addTask() {
+            const taskText = taskInput.value.trim();
+            if (taskText) {
+                tasks.push({ text: taskText, completed: false });
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+                renderTasks();
+                taskInput.value = '';
+            }
+        }
+
+        function deleteTask(index) {
+            tasks.splice(index, 1);
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            renderTasks();
+        }
+
+        function toggleComplete(index) {
+            tasks[index].completed = !tasks[index].completed;
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            renderTasks();
+        }
+
+        addTaskBtn.addEventListener('click', addTask);
+        renderTasks();
+    </script>
+</body>
+</html>
