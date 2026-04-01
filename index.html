@@ -3,18 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estimara Minestry</title>
+    <title>Form Example</title>
 </head>
 <body>
-    <h1>Welcome to Estimara Minestry</h1>
-    <form>
-        <label for="issue-options">Choose an issue option:</label>
-        <select id="issue-options" name="issue-options">
-            <option value="option1">Option 1</option>
-            <option value="option2">Option 2</option>
-            <option value="option3">Option 3</option>
-        </select>
-        <input type="submit" value="Submit">
+    <h1>Submit Your Issue</h1>
+    <form id="issueForm">
+        <label for="issueTitle">Issue Title:</label>
+        <input type="text" id="issueTitle" name="issueTitle" required><br><br>
+
+        <label for="issueDescription">Description:</label>
+        <textarea id="issueDescription" name="issueDescription" required></textarea><br><br>
+
+        <label for="issueType">Type of Issue:</label>
+        <select id="issueType" name="issueType" required>
+            <option value="bug">Bug</option>
+            <option value="feature">Feature Request</option>
+            <option value="other">Other</option>
+        </select><br><br>
+
+        <input type="submit" value="Submit Issue">
     </form>
+    <script>
+        document.getElementById('issueForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            // Handle form submission
+            alert('Submitting your issue!');
+        });
+    </script>
 </body>
 </html>
